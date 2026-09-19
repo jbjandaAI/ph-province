@@ -14,9 +14,14 @@ import (
 
 const usage = `Usage:
   ph-province             Start the interactive prompt
-  ph-province cebu        Render Cebu and exit
+  ph-province PROVINCE    Render a province and exit
+  ph-province --list      List all supported provinces
   ph-province --help      Show this help
   ph-province --version   Show the version
+
+Examples:
+  ph-province cebu
+  ph-province agusan del norte
 `
 
 type runtime struct {
@@ -46,14 +51,20 @@ func (runtime runtime) run(args []string) int {
 	case len(args) == 1 && args[0] == "--version":
 		fmt.Fprintf(runtime.stdout, "ph-province %s\n", runtime.version)
 		return 0
-	case len(args) == 1:
-		if err := runtime.draw(args[0], false); err != nil {
+	case len(args) == 1 && args[0] == "--list":
+		if err := runtime.printList(); err != nil {
+			fmt.Fprintf(runtime.stderr, "ph-province: %v\n", err)
+			return 1
+		}
+		return 0
+	case len(args) >= 1 && !strings.HasPrefix(args[0], "-"):
+		if err := runtime.draw(strings.Join(args, " "), false); err != nil {
 			fmt.Fprintf(runtime.stderr, "ph-province: %v\n", err)
 			return 1
 		}
 		return 0
 	default:
-		fmt.Fprintln(runtime.stderr, "ph-province: expected one province name")
+		fmt.Fprintln(runtime.stderr, "ph-province: invalid arguments")
 		fmt.Fprint(runtime.stderr, usage)
 		return 2
 	}
@@ -77,6 +88,12 @@ func (runtime runtime) interactive() int {
 		if strings.EqualFold(province, "quit") || strings.EqualFold(province, "exit") {
 			return 0
 		}
+		if strings.EqualFold(province, "list") {
+			if err := runtime.printList(); err != nil {
+				fmt.Fprintf(runtime.stderr, "ph-province: %v\n", err)
+			}
+			continue
+		}
 		if err := runtime.draw(province, true); err != nil {
 			fmt.Fprintf(runtime.stderr, "ph-province: %v\n", err)
 		}
@@ -84,10 +101,7 @@ func (runtime runtime) interactive() int {
 }
 
 func (runtime runtime) draw(province string, interactive bool) error {
-	if !strings.EqualFold(strings.TrimSpace(province), "cebu") {
-		return fmt.Errorf("unknown province %q; version 1 supports: cebu", province)
-	}
-	shape, err := boundary.Cebu()
+	match, err := boundary.Resolve(province)
 	if err != nil {
 		return err
 	}
@@ -95,10 +109,19 @@ func (runtime runtime) draw(province string, interactive bool) error {
 	if interactive {
 		rows = max(2, rows-2)
 	}
-	output, err := render.Draw(shape, columns, rows)
+	output, err := render.Draw(match.Shape, columns, rows)
 	if err != nil {
 		return err
 	}
 	_, err = io.WriteString(runtime.stdout, output)
+	return err
+}
+
+func (runtime runtime) printList() error {
+	names, err := boundary.Names()
+	if err != nil {
+		return err
+	}
+	_, err = fmt.Fprintln(runtime.stdout, strings.Join(names, "\n"))
 	return err
 }

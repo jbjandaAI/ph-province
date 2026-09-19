@@ -1,8 +1,8 @@
 # ph-province
 
-`ph-province` draws the shape of Cebu in a terminal using Unicode half-block
-characters. It is network-free at runtime and supports direct and interactive
-use.
+`ph-province` draws any of the 82 Philippine provinces in a terminal using
+Unicode half-block characters. It is network-free at runtime and supports
+direct and interactive use.
 
 ## Usage
 
@@ -17,6 +17,12 @@ $ ph-province cebu
              ⋮
 ```
 
+Multiword province names do not need quotes:
+
+```console
+$ ph-province agusan del norte
+```
+
 Start the prompt when you want to make repeated queries:
 
 ```console
@@ -24,8 +30,19 @@ $ ph-province
 province> cebu
 ```
 
-Province names are case-insensitive. Version 1 supports Cebu. Enter `quit`,
-`exit`, or Ctrl-D to leave interactive mode.
+Province names are case-insensitive, and punctuation, hyphens, and repeated
+spaces are normalized. Common former names such as `Compostela Valley`,
+`North Cotabato`, and `Western Samar` are also recognized. Mistyped names
+receive suggestions instead of silently selecting a province.
+
+List all supported names with:
+
+```console
+$ ph-province --list
+```
+
+Within interactive mode, enter `list` to show the same catalog. Enter `quit`,
+`exit`, or Ctrl-D to leave.
 
 ## Install
 
@@ -57,9 +74,9 @@ and arm64.
 
 ## Boundary data
 
-The embedded Cebu geometry was extracted from the simplified geoBoundaries
-Philippines ADM2 dataset pinned at commit `41af8f1`. See
-[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for source and license details.
+The 82 embedded province geometries were extracted from a pinned, simplified
+PSA/NAMRIA-derived dataset. See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)
+for the exact release, checksums, provenance, and attribution.
 
 The file `cebu_shape.png` is a user-provided, watermarked visual reference. It
 is intentionally ignored by Git and is not read, embedded, or redistributed by

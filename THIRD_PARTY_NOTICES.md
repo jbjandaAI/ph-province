@@ -1,21 +1,35 @@
 # Third-party notices
 
-## Cebu administrative boundary
+## Philippine province boundaries
 
-The Cebu geometry in `internal/boundary/cebu.geojson` was extracted from:
+The province geometries in `internal/boundary/provinces.geojson` were extracted
+from the following pinned release asset:
 
-- Dataset: geoBoundaries Philippines ADM2 (Provinces), simplified GeoJSON
-- Boundary ID: `PHL-ADM2-2640588`
-- Boundary year represented: 2020
-- Pinned source commit: `41af8f1`
-- Upstream source: National Mapping and Resource Information Authority
-  (NAMRIA), Philippines Statistics Authority (PSA), and OCHA Philippines
-- Dataset page: <https://www.geoboundaries.org/api/current/gbOpen/PHL/ADM2/>
-- Source file: <https://github.com/wmgeolab/geoBoundaries/blob/41af8f1/releaseData/gbOpen/PHL/ADM2/geoBoundaries-PHL-ADM2_simplified.geojson>
-- License: Creative Commons Attribution 3.0 Intergovernmental Organisations
-  (CC BY 3.0 IGO), <https://creativecommons.org/licenses/by/3.0/igo/>
+- Project: Barangay Boundaries Repository
+- Release: `v2026.4.13.0`
+- Snapshot: Philippine Standard Geographic Code, 24 October 2023
+- Boundary source version: NAMRIA, 6 November 2023
+- Asset: `provinces.geojson`
+- Project: <https://github.com/bendlikeabamboo/barangay-boundaries-repository>
+- Release: <https://github.com/bendlikeabamboo/barangay-boundaries-repository/releases/tag/v2026.4.13.0>
+- Source asset SHA-256: `60d80617841f0ecad4cb1c304ab82740af68f206737a2fe2cab0ffdc0aedcfbe`
 
-The embedded file contains only the Cebu `MultiPolygon` geometry. Its SHA-256
-digest is `2a9c2d78f7a38718a85cee6ff60ea28234c685c0e35f4abe25a7379e0b894575`.
+The embedded derivative retains only each province's canonical name, ten-digit
+PSGC code, and geometry. Its SHA-256 digest is
+`86abb17b600a14d55326e2b5a4d48403070ea3fb3b20846c572cb99e508ad1f6`.
 
-No endorsement by geoBoundaries or the upstream data providers is implied.
+### Attribution
+
+- Philippine Standard Geographic Code snapshots: © Philippine Statistics
+  Authority (PSA), <https://psa.gov.ph/classification/psgc/>
+- Administrative boundaries: © National Mapping and Resource Information
+  Authority (NAMRIA), <https://namria.gov.ph/>
+- Processing and classification pipeline: Barangay Boundaries Repository
+  contributors
+
+The upstream repository's code is released under the MIT License. Its README
+separately requests that downstream products credit PSA and NAMRIA for the
+underlying data; this notice preserves that attribution and does not claim that
+the underlying government datasets are covered by the code license.
+
+No endorsement by PSA, NAMRIA, or the dataset project is implied.
